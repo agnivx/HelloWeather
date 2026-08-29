@@ -5,7 +5,7 @@
 [![CSS3 Glassmorphism](https://img.shields.io/badge/CSS3-Glassmorphism-60a5fa.svg)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![Open-Meteo](https://img.shields.io/badge/API-Open--Meteo-0284c7.svg)](https://open-meteo.com/)
 
-> **HelloWeather** is a responsive, glassmorphic weather web application packed with real-time 60 FPS dynamic background particle simulations, 24-hour hourly forecasts, 7-day extended forecasts, Air Quality Index (AQI), UV Index, an interactive Wind Compass, Sun daylight tracking, and procedurally generated ambient soundscapes that automatically adapt to live weather conditions.
+> **HelloWeather** is a responsive, glassmorphic weather web application packed with real-time 60 FPS dynamic background particle simulations, 24-hour hourly forecasts, 7-day extended forecasts, Air Quality Index (AQI), UV Index, Wind Compass, Sun daylight tracking, and procedurally generated ambient soundscapes that automatically adapt to live weather conditions.
 
 ---
 
