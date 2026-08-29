@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="HelloWeather - A modern, real-time glassmorphic weather application with dynamic particle simulations, 24h hourly and 7-day extended forecasts, Air Quality Index, UV tracking, and auto-adaptive ambient soundscapes.">
+    <meta name="theme-color" content="#090d16">
+    <title>HelloWeather — Live Real-Time Forecast & Atmosphere</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Application Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Live Canvas Weather Particle Backdrop -->
+    <canvas id="weather-canvas"></canvas>
+
+    <!-- Main Application Shell -->
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav glass-card">
+            <div class="nav-brand-row">
+                <div class="brand-logo" id="brand-logo" title="Reset to default">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-cloud-bolt"></i>
+                    </div>
+                    <span class="logo-text">HelloWeather</span>
+                </div>
+
+                <!-- Navigation Controls & Actions -->
+                <div class="nav-actions">
+                    <button id="locate-btn" class="icon-btn" title="Detect My Location">
+                        <i class="fa-solid fa-crosshairs"></i>
+                    </button>
+                    
+                    <button id="audio-toggle" class="icon-btn audio-btn" title="Toggle Weather Soundscape">
+                        <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="sound-badge" id="sound-badge">Off</span>
+                    </button>
+
+                    <div class="unit-toggle" id="unit-toggle" title="Switch Temperature Unit">
+                        <div class="unit-option active" data-unit="C">°C</div>
+                        <div class="unit-option" data-unit="F">°F</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Search Bar with Autocomplete -->
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <i class="fa-solid fa-location-dot search-icon"></i>
+                    <input type="text" id="city-search-input" placeholder="Search city, state or country..." autocomplete="off" spellcheck="false">
+                    <button id="clear-search-btn" class="clear-btn" title="Clear">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+            </div>
+        </header>
+
+        <!-- Bookmarked Favorite Cities Bar -->
+        <div class="favorites-bar" id="favorites-bar"></div>
+
+        <!-- Main Dashboard Content Grid -->
+        <main class="dashboard-grid">
+            <!-- Left Column: Current Weather, 24h Hourly & 7-Day Forecast -->
+            <section class="left-column">
+                <!-- Hero Weather Card -->
+                <div class="hero-card glass-card" id="hero-card">
+                    <div class="hero-header">
+                        <div class="location-info">
+                            <div class="location-title-row">
+                                <h1 id="city-name">Loading...</h1>
+                                <span class="country-tag" id="country-tag">--</span>
+                            </div>
+                            <div class="location-meta">
+                                <i class="fa-regular fa-clock"></i>
+                                <span id="current-date-time">--</span>
+                            </div>
+                        </div>
+                        <button class="bookmark-toggle-btn" id="bookmark-btn" title="Save to Favorites">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+                    </div>
+
+                    <div class="hero-body">
+                        <div class="hero-main-temp">
+                            <span class="current-temp" id="current-temp">--</span>
+                            <div class="hero-condition-mobile">
+                                <span class="condition-badge" id="condition-badge">--</span>
+                            </div>
+                        </div>
+                        <div class="hero-condition-group">
+                            <div class="hero-weather-icon" id="hero-weather-icon"></div>
+                            <span class="condition-badge condition-badge-desktop" id="condition-badge-desktop">--</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-footer">
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-temperature-half"></i>
+                            <span>Feels <strong id="feels-like-temp">--</strong></span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-arrow-up-long"></i>
+                            <span>High <strong id="high-temp">--</strong></span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-arrow-down-long"></i>
+                            <span>Low <strong id="low-temp">--</strong></span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-wind"></i>
+                            <span>Wind <strong id="hero-wind">--</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 24-Hour Hourly Forecast -->
+                <div class="hourly-section glass-card">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>24-Hour Hourly Forecast</span>
+                        </div>
+                    </div>
+                    <div class="hourly-carousel" id="hourly-carousel"></div>
+                </div>
+
+                <!-- 7-Day Extended Forecast -->
+                <div class="daily-section glass-card">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>7-Day Extended Forecast</span>
+                        </div>
+                    </div>
+                    <div class="daily-list" id="daily-list"></div>
+                </div>
+            </section>
+
+            <!-- Right Column: Atmospheric Analytics & Insights -->
+            <section class="right-column">
+                <div class="highlights-grid">
+                    <!-- Air Quality Index (AQI) -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>Air Quality Index</span>
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div class="highlight-main">
+                            <div class="highlight-val" id="aqi-val">--</div>
+                            <div class="aqi-pill" id="aqi-pill">--</div>
+                            <div class="highlight-sub" id="aqi-desc">--</div>
+                        </div>
+                        <div class="pollutants-list">
+                            <div class="pollutant-item">
+                                <span>PM2.5</span>
+                                <strong id="pollutant-pm25">--</strong>
+                            </div>
+                            <div class="pollutant-item">
+                                <span>PM10</span>
+                                <strong id="pollutant-pm10">--</strong>
+                            </div>
+                            <div class="pollutant-item">
+                                <span>Ozone</span>
+                                <strong id="pollutant-o3">--</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UV Index Gauge -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>UV Index</span>
+                            <i class="fa-solid fa-sun"></i>
+                        </div>
+                        <div class="highlight-main">
+                            <div class="highlight-val" id="uv-val">--</div>
+                            <div class="uv-gauge-bar">
+                                <div class="uv-pointer" id="uv-pointer" style="left: 0%;"></div>
+                            </div>
+                            <div class="highlight-sub" id="uv-advice">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Wind & Gusts with Compass -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>Wind & Gusts</span>
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <div class="wind-card-body">
+                            <div class="compass-dial">
+                                <div class="compass-needle" id="compass-needle"></div>
+                            </div>
+                            <div class="wind-info-col">
+                                <div class="highlight-val" id="wind-speed-val">--</div>
+                                <div class="highlight-sub" id="wind-dir-val">--</div>
+                                <div class="highlight-sub" id="wind-gust-val">--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise & Sunset Daylight Cycle -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>Sun & Daylight</span>
+                            <i class="fa-solid fa-mountain-sun"></i>
+                        </div>
+                        <div class="sun-arc-container">
+                            <svg class="sun-arc-svg" viewBox="0 0 200 60" fill="none">
+                                <path d="M 10 50 A 90 40 0 0 1 190 50" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-dasharray="4 4" />
+                                <path id="sun-arc-active" d="M 10 50 A 90 40 0 0 1 190 50" stroke="url(#sunArcGrad)" stroke-width="3" />
+                                <defs>
+                                    <linearGradient id="sunArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#F59E0B" />
+                                        <stop offset="100%" stop-color="#38BDF8" />
+                                    </linearGradient>
+                                </defs>
+                                <circle id="sun-arc-orb" cx="100" cy="15" r="5" fill="#FBBF24" filter="drop-shadow(0 0 6px #FBBF24)" />
+                            </svg>
+                        </div>
+                        <div class="sun-times-row">
+                            <span><i class="fa-solid fa-arrow-up"></i> Rise: <strong id="sunrise-time">--</strong></span>
+                            <span><i class="fa-solid fa-arrow-down"></i> Set: <strong id="sunset-time">--</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Humidity & Dew Point -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>Humidity & Moisture</span>
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <div class="highlight-main">
+                            <div class="highlight-val" id="humidity-val">--</div>
+                            <div class="highlight-sub" id="dewpoint-val">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Visibility & Barometric Pressure -->
+                    <div class="highlight-card glass-card">
+                        <div class="highlight-header">
+                            <span>Visibility & Pressure</span>
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <div class="highlight-main">
+                            <div class="highlight-val" id="visibility-val">--</div>
+                            <div class="highlight-sub" id="pressure-val">--</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Application Script Modules -->
+    <script src="js/icons.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/canvas-particles.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
