@@ -48,25 +48,6 @@ Generates 100% synthetic, relaxing natural audio soundscapes natively in the bro
 
 ---
 
-## 📁 Project Structure
-
-```
-HelloWeather/
-├── index.html              # Semantic HTML5 layout with glassmorphic dashboard
-├── style.css               # CSS design tokens, dynamic themes, animations & responsive grid
-├── index.js                # Application orchestrator, state management & lifecycle
-├── js/
-│   ├── api.js              # Open-Meteo weather API, AQI & Geocoding service layer
-│   ├── canvas-particles.js # 60fps HTML5 Canvas dynamic weather simulation engine
-│   ├── audio.js            # Web Audio API procedural multi-sound synthesizer
-│   └── icons.js            # High-definition vector SVG weather icons with micro-animations
-├── images/                 # Static assets & fallback graphics
-├── LICENSE                 # MIT License
-└── README.md               # Project documentation
-```
-
----
-
 ## 🚀 Quick Start
 
 No build tools or installation steps are required! Open `index.html` directly in any modern browser, or run a local static server:
