@@ -1,4 +1,4 @@
-# 🌦️ HelloWeather — Real-Time Atmosphere & Forecast Web App
+# 🌦️ HelloWeather: Real-Time Atmosphere & Forecast Web App
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
